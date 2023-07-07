@@ -2,21 +2,35 @@
 #include "main.h"
 
 /**
- * print_binary - Prints the binary representation of a number
- * @n: The number to be printed in binary
+ * binary_to_uint - Converts a binary number to an unsigned int
+ * @b: The binary number as a string
+ *
+ * Return: The converted unsigned int
  */
-void print_binary(unsigned long int n)
+unsigned int binary_to_uint(const char *b)
 {
-	int num_bits = sizeof(unsigned long int) * 8;  /* Number of bits in unsigned long int */
+	unsigned int result = 0;
 
-	/* Starting from the most significant bit, check each bit and print it */
-	for (int i = num_bits - 1; i >= 0; i--)
+	if (b == NULL)
+		return 0;
+
+	for (int i = 0; b[i] != '\0'; i++)
 	{
-		unsigned long int mask = 1UL << i;  /* Create a mask to extract the bit at position i */
-		unsigned long int bit = (n & mask) >> i;  /* Extract the bit at position i */
-
-		printf("%lu", bit);  /* Print the bit */
+		if (b[i] == '0')
+		{
+			result <<= 1; /* Left shift the result by 1 position */
+		}
+		else if (b[i] == '1')
+		{
+			result = (result << 1) | 1; /* Left shift the result by 1 position and set the rightmost bit to 1 */
+		}
+		else
+		{
+			return 0; /* Invalid character encountered, return 0 */
+		}
 	}
+
+	return result;
 }
 
 /**
@@ -26,11 +40,9 @@ void print_binary(unsigned long int n)
  */
 int main(void)
 {
-	unsigned long int num = 255;
-
-	printf("Binary representation of %lu: ", num);
-	print_binary(num);
-	printf("\n");
+	const char *binary = "110101";
+	unsigned int number = binary_to_uint(binary);
+	printf(" %s: %u\n", binary, number);
 
 	return 0;
 }
