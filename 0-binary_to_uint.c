@@ -1,29 +1,36 @@
+#include <stdio.h>
 #include "main.h"
 
+/**
+ * print_binary - Prints the binary representation of a number
+ * @n: The number to be printed in binary
+ */
 void print_binary(unsigned long int n)
 {
 	int num_bits = sizeof(unsigned long int) * 8;  /* Number of bits in unsigned long int */
-	unsigned long int mask = 1UL << (num_bits - 1); /* Mask for the leftmost bit */
 
-	int bit;
-	for (int i = 0; i < num_bits; i++) {
-		bit = (n & mask) ? 1 : 0; /* Extract the current bit */
-		mask >>= 1; /* Shift the mask to the right by 1 position */
-		/* Print the bit without using printf or puts */
-		if (bit == 0) {
-			write(1, "0", 1);
-		} else {
-			write(1, "1", 1);
-		}
+	/* Starting from the most significant bit, check each bit and print it */
+	for (int i = num_bits - 1; i >= 0; i--)
+	{
+		unsigned long int mask = 1UL << i;  /* Create a mask to extract the bit at position i */
+		unsigned long int bit = (n & mask) >> i;  /* Extract the bit at position i */
+
+		printf("%lu", bit);  /* Print the bit */
 	}
 }
 
+/**
+ * main - Entry point
+ *
+ * Return: Always 0
+ */
 int main(void)
 {
 	unsigned long int num = 255;
 
+	printf("Binary representation of %lu: ", num);
 	print_binary(num);
-	write(1, "\n", 1);
+	printf("\n");
 
 	return 0;
 }
